@@ -1,0 +1,120 @@
+int PY = 400;
+int PX = 500;
+int botA = 100;
+float side;
+int rSide;
+int killTime;
+boolean pDead = false;
+int i;
+bot[] bots =new bot[110];
+void setup() {
+  size(1000,800);
+  for(int i = 0; i < 110; i++){
+  bots[i] = new bot();
+  bots[i].moveWhere();
+  }
+  //i=0;
+}
+void draw() {
+  killTime++;
+  clear();
+  background(255);
+  backdrop();
+  for(int i = 0;i<100;i++){
+    player();
+    bots[i].move();
+    bots[i].display();
+  }
+  if(pDead==true){exit();}
+  rSide = 0;
+  if(killTime > 100){sideGuesser();
+  killTime=0;
+}
+  println(killTime);
+  delay(10);
+}
+void sideGuesser(){
+  side = random(1,4);
+  rSide = round(side);
+  for(int i = 0;i<100;i++){bots[i].moveWhere();}
+  if(PX == 500&&PY == 400){pDead = true;}
+  println(rSide);
+}
+void player() {
+  fill(255);
+  ellipse(PX,PY,50,50);
+  if(rSide==1&&PX<501&&PY<401||rSide==2&&PX>501&&PY<401||rSide==3&&PX<501&&PY>401||rSide==4&&PX>501&&PY>401){
+    pDead = true;
+  }
+}
+  void keyPressed(){
+    if(key == 'w'){
+      if(PY>0){
+      PY=PY-10;
+      }
+    }
+    if(key == 's'){
+      if(PY < 800){
+      PY=PY+10;
+      }
+    }
+    if(key == 'a'){
+      if (PX>0){
+        PX=PX-10;
+      }
+    }
+    if(key == 'd'){
+      if(PX<1000){
+      PX=PX+10;
+      }
+    }
+  }
+void backdrop() {
+    fill(255,0,0);
+  rect(0,0,500,400);
+  fill(0,255,0);
+  rect(500,0,500,400);
+  fill(0,0,255);
+  rect(0,400,500,400);
+  fill(255,255,0);
+  rect(500,400,500,400);
+}
+class bot{
+  int BX = 500;
+  int BY = 400;
+  float locY;
+  float locX;
+  boolean botAlive = true;
+  float R = random(0,255);
+  float G = random(0,255);
+  float B = random(0,255);
+  void moveWhere(){
+      locX = random(0,1000);
+      locY = random(0,800);
+  }
+  void display(){
+    if(botAlive == true){
+    fill(R,G,B);
+    ellipse(BX,BY,50,50);
+    if(rSide==1&&BX<500&&BY<400||rSide==2&&BX>500&&BY<400||rSide==3&&BX<500&&BY>400||rSide==4&&BX>500&&BY>400){
+    botAlive = false;
+  }
+    }
+  }
+  void move() {
+    if(botAlive == true){
+      if(locX<BX){
+        BX=BX-10;
+      }
+      if(locX>BX){
+        BX=BX+10;
+      }
+      if(locY<BY){
+        BY=BY-10;
+      }
+      if(locY>BY){
+        BY=BY+10;
+      }
+    }
+  }
+}
